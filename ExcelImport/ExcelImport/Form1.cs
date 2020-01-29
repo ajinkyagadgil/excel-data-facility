@@ -16,5 +16,32 @@ namespace ExcelImport
         {
             InitializeComponent();
         }
+
+        private void btnImportExcelFile_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog= new OpenFileDialog
+            {
+                Title = "Browse Files",
+
+                CheckFileExists = true,
+                CheckPathExists = true,
+
+                DefaultExt = "txt",
+                Filter = "CSV files (*.csv)|*.csv|Excel Files|*.xls;*.xlsx",
+                FilterIndex = 2,
+                RestoreDirectory = true,
+
+                ReadOnlyChecked = true,
+                ShowReadOnly = true
+            };
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                tbFileName.Text = openFileDialog.FileName;
+            }
+        }
+
+        private void btnImportExcel_Click(object sender, EventArgs e)
+        {
+        }
     }
 }
