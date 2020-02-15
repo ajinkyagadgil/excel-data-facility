@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExcelFacilityForm));
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.btnBrowse = new System.Windows.Forms.Button();
             this.tbFileName = new System.Windows.Forms.TextBox();
@@ -120,6 +121,7 @@
             this.Controls.Add(this.btnImportExcel);
             this.Controls.Add(this.tbFileName);
             this.Controls.Add(this.btnBrowse);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ExcelFacilityForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Excel Data Facility";
