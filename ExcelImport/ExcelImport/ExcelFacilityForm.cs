@@ -9,6 +9,9 @@ namespace ExcelImport
 {
     public partial class ExcelFacilityForm : Form
     {
+        /// <summary>
+        /// Nlogger implementation for Logging
+        /// </summary>
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         public ExcelFacilityForm()
@@ -16,6 +19,11 @@ namespace ExcelImport
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Browse the CSV files
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnImportExcelFile_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
@@ -34,11 +42,14 @@ namespace ExcelImport
                 ShowReadOnly = true
             };
             if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
                 tbFileName.Text = openFileDialog.FileName;
-            }
         }
 
+        /// <summary>
+        /// Parse the CSV file and output the output file to folder
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnImportExcel_Click(object sender, EventArgs e)
         {
             if (ValidateChildren(ValidationConstraints.Enabled))
@@ -75,7 +86,7 @@ namespace ExcelImport
                             while (!parser.EndOfData)
                             {
                                 string[] fields = parser.ReadFields();
-                                if (Convert.ToInt64(fields[14]) > Convert.ToInt64(value))
+                                if (Convert.ToInt64(fields[14]) < Convert.ToInt64(value))
                                 {
                                     var line = "\"" + string.Join("\",\"", fields) + "\"";
                                     data.Add(line);
@@ -93,30 +104,32 @@ namespace ExcelImport
                         OpenFolder(folderPath);
                     }
                     else
-                    {
                         MessageBox.Show("Please select CSV file");
-                        return;
-                    }
                 }
                 else
-                {
                     MessageBox.Show("File does not exist in current path");
-                    return;
-                }
             }
             catch (Exception ex)
             {
                 logger.Error(ex);
                 MessageBox.Show("Something went wrong, please check logs in program data");
-                return;
             }
         }
 
+        /// <summary>
+        /// Get timespamp from current time for naming the output file
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static String GetTimestamp(DateTime value)
         {
             return value.ToString("yyyyMMddHHmmss");
         }
 
+        /// <summary>
+        /// Opens the folder where file is saved after processing
+        /// </summary>
+        /// <param name="folderPath"></param>
         private void OpenFolder(string folderPath)
         {
             try
@@ -131,9 +144,7 @@ namespace ExcelImport
                     Process.Start(startInfo);
                 }
                 else
-                {
                     MessageBox.Show(string.Format("{0} Directory does not exist!", folderPath));
-                }
             }
             catch (Exception ex)
             {
@@ -142,28 +153,30 @@ namespace ExcelImport
             }
         }
 
+        /// <summary>
+        /// Validation for Value field
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tbValue_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (tbValue.Text == string.Empty)
-            {
                 errorProviderValue.SetError(tbValue, "Value is required.");
-            }
             else
-            {
                 errorProviderValue.SetError(tbValue, string.Empty);
-            }
         }
 
+        /// <summary>
+        /// Validation for file path
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tbFileName_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (tbFileName.Text == string.Empty)
-            {
                 errorProviderValue.SetError(tbFileName, "File is required.");
-            }
             else
-            {
                 errorProviderValue.SetError(tbFileName, string.Empty);
-            }
         }
     }
 }
